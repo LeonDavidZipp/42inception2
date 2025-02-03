@@ -1,8 +1,8 @@
-CERTDIR := srcs/dockerfiles/nginx/certs
-SECRETSDIR := srcs/secrets
+CERTDIR := src/requirements/nginx/certs
+SECRETSDIR := src/secrets
 
 all: certs secrets
-	docker-compose up --build
+	docker-compose up --build --remove-orphans
 
 db:
 	docker-compose up --build db
@@ -30,4 +30,4 @@ clean:
 	rm -rf $(CERTDIR)
 	docker secret rm db_root_pwd wp_db_user_pwd wp_admin_pwd wp_user_pwd
 
-re: clean all
+re: clean all db nginx wp certs secrets
