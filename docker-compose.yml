@@ -77,8 +77,6 @@ services:
         environment:
             - WP_DB_USER=${WP_DB_USER}
             - WP_DB_NAME=${WP_DB_NAME}
-        expose:
-            - "3306"
         networks:
             - inception
         restart: unless-stopped

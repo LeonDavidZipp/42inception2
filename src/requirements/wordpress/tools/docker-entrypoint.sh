@@ -25,7 +25,11 @@
         --dbpass="${WP_DB_USER_PWD}" \
         --dbhost="${WP_DB_HOST}" \
         --dbprefix=${WP_DB_PREFIX} \
+        --config-file=/var/www/html/wp-config.php \
+        --force \
         --allow-root
+
+    echo WP_DB_USER_PWD: $WP_DB_USER_PWD
 
     if ! wp core is-installed --allow-root; then
         wp core install \
@@ -36,8 +40,11 @@
             --admin_password="${WP_ADMIN_PWD}" \
             --allow-root
     else
+    	echo WP_DB_USER_PWD: $WP_DB_USER_PWD
         echo "WordPress is already installed. Skipping core installation."
     fi
+
+	echo WP_DB_USER_PWD: $WP_DB_USER_PWD
 
     if ! wp user get "${WP_USER}" --field=ID --allow-root > /dev/null 2>&1; then
         wp user create \
@@ -46,8 +53,10 @@
             --user_pass="${WP_USER_PWD}" \
             --allow-root
     else
+    	echo WP_DB_USER_PWD: $WP_DB_USER_PWD
         echo "User ${WP_USER} already exists. Skipping user creation."
     fi
+    echo WP_DB_USER_PWD: $WP_DB_USER_PWD
 #fi
 
 chown -R www-data:www-data /var/www/html/
