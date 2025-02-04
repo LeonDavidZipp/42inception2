@@ -83,5 +83,3 @@ services:
         networks:
             - inception
         restart: unless-stopped
-        user:
-            mysql

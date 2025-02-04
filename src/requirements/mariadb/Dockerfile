@@ -1,28 +1,30 @@
-# ----------------------------------------------- #
-# Base image for the MariaDB container            #
-# ----------------------------------------------- #
-FROM debian:11 as base
-
+## ----------------------------------------------- #
+## Base image for the MariaDB container            #
+## ----------------------------------------------- #
+FROM debian:bullseye as base
 LABEL maintainer="lzipp"
 
-# copy needed files
-# COPY ./50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY ./tools/init.sql ./
-COPY ./tools/entrypoint.sh /usr/local/bin/.
+# Set environment variable to suppress prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# install mariadb and other needed packages
+# Copy files
+COPY tools/init.sql /tmp/init.sql
+COPY --chown=mysql:mysql tools/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY tools/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+# Update package lists and install MariaDB server
 RUN apt-get update \
-	&& apt-get upgrade \
 	&& apt-get install -y \
-		mariadb-server \
-		sed
+	mariadb-server \
+	sed \
+		-o Dpkg::Options::="--force-confdef" \
+		-o Dpkg::Options::="--force-confold"
 
-# create needed directories and set permissions
-RUN mkdir -p /var/run/mysqld /var/lib/mysql \
-	&& chown -R mysql:mysql /var/run/mysqld /var/lib/mysql \
-	&& chmod +x /usr/local/bin/entrypoint.sh
+RUN mkdir /run/mysqld && chown mysql:mysql /run/mysqld
 
-# use default config but allow remote connections
-RUN sed -i "s/127.0.0.1/0.0.0.0/" /etc/mysql/mariadb.conf.d/50-server.cnf
+## Create necessary directories and set permissions
+RUN mkdir -p /var/run/mysqld \
+ && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql \
+ && chmod +x /usr/local/bin/docker-entrypoint.sh
 
-CMD ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
