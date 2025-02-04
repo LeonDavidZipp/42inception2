@@ -1,7 +1,7 @@
 ## ----------------------------------------------- #
 ## Base image for the MariaDB container            #
 ## ----------------------------------------------- #
-FROM debian:bullseye as base
+FROM debian:bullseye
 LABEL maintainer="lzipp"
 
 # Set environment variable to suppress prompts

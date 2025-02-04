@@ -1,4 +1,5 @@
 FROM debian:bullseye
+LABEL maintainer="lzipp"
 
 RUN apt-get update \
 	&& apt-get upgrade \
