@@ -38,38 +38,37 @@ services:
             - inception
         restart: always
 
-    # wordpress:
-    #     container_name: wordpress
-    #     build:
-    #         context: src/requirements/wordpress
-    #     depends_on:
-    #         - db
-    #     volumes:
-    #         - wp_data:/var/www/html/
-    #     networks:
-    #         - inception
-    #     secrets:
-    #         - wp_admin_pwd
-    #         - wp_user_pwd
-    #         - wp_db_user_pwd
-    #     environment:
-    #         - WP_DB_NAME=${WP_DB_NAME}
-    #         - WP_DB_USER=${WP_DB_USER}
-    #         - WP_DB_HOST=${WP_DB_HOST}
-    #         - WP_DB_PREFIX=${WP_DB_PREFIX}
-    #         - WP_DOMAIN=${WP_DOMAIN}
-    #         - WP_TITLE=${WP_TITLE}
-    #         - WP_ADMIN=${WP_ADMIN}
-    #         - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
-    #         - WP_USER=${WP_USER}
-    #         - WP_USER_EMAIL=${WP_USER_EMAIL}
-    #     restart: always
+    wordpress:
+        container_name: wordpress
+        build:
+            context: src/requirements/wordpress
+        depends_on:
+            - db
+        volumes:
+            - wp_data:/var/www/html/
+        networks:
+            - inception
+        secrets:
+            - wp_admin_pwd
+            - wp_user_pwd
+            - wp_db_user_pwd
+        environment:
+            - WP_DB_NAME=${WP_DB_NAME}
+            - WP_DB_USER=${WP_DB_USER}
+            - WP_DB_HOST=${WP_DB_HOST}
+            - WP_DB_PREFIX=${WP_DB_PREFIX}
+            - WP_DOMAIN=${WP_DOMAIN}
+            - WP_TITLE=${WP_TITLE}
+            - WP_ADMIN=${WP_ADMIN}
+            - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+            - WP_USER=${WP_USER}
+            - WP_USER_EMAIL=${WP_USER_EMAIL}
+        restart: unless-stopped
 
     db:
         container_name: db
         build:
             context: src/requirements/mariadb
-            target: base
         volumes:
             - db_data:/var/lib/mysql
         secrets:
@@ -78,6 +77,8 @@ services:
         environment:
             - WP_DB_USER=${WP_DB_USER}
             - WP_DB_NAME=${WP_DB_NAME}
+        expose:
+            - "3306"
         networks:
             - inception
         restart: unless-stopped

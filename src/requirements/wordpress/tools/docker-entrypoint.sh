@@ -1,11 +1,23 @@
+#!/bin/bash
+
 # Create config if it doesn't exist
-if [ ! -f /var/www/html/wp-config.php ]; then
+#if [ ! -f /var/www/html/wp-config.php ]; then
     cd /var/www/html
     wp core download --allow-root
 
     WP_DB_USER_PWD=$(cat /run/secrets/wp_db_user_pwd)
     WP_ADMIN_PWD=$(cat /run/secrets/wp_admin_pwd)
     WP_USER_PWD=$(cat /run/secrets/wp_user_pwd)
+
+    echo WP_DB_USER_PWD: $WP_DB_USER_PWD
+    echo WP_ADMIN_PWD: $WP_ADMIN_PWD
+    echo WP_USER_PWD: $WP_USER_PWD
+
+    echo WP_DB_NAME: $WP_DB_NAME
+    echo WP_DB_USER: $WP_DB_USER
+    echo WP_DB_USER_PWD: $WP_DB_USER_PWD
+    echo WP_DB_HOST: $WP_DB_HOST
+    echo WP_DB_PREFIX: $WP_DB_PREFIX
 
     wp config create \
         --dbname="${WP_DB_NAME}" \
@@ -36,8 +48,8 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     else
         echo "User ${WP_USER} already exists. Skipping user creation."
     fi
-fi
+#fi
 
 chown -R www-data:www-data /var/www/html/
 
-php-fpm -F
+php-fpm8.2 -F
