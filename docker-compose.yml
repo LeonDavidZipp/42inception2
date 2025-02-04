@@ -22,22 +22,22 @@ secrets:
         file: src/secrets/wp_user_pwd.txt
 
 services:
-    # nginx:
-    #     container_name: nginx
-    #     build:
-    #         context: src/requirements/nginx
-    #     ports:
-    #         - "443:443"
-    #         - "80:80"
-    #     depends_on:
-    #         - wordpress
-    #         - db
-    #     volumes:
-    #         - ./web:/var/www/html
-    #     networks:
-    #         - inception
-    #     restart: always
-#
+    nginx:
+        container_name: nginx
+        build:
+            context: src/requirements/nginx
+        ports:
+            - "443:443"
+            - "80:80"
+        depends_on:
+            - wordpress
+            - db
+        volumes:
+            - ./web:/var/www/html
+        networks:
+            - inception
+        restart: always
+
     # wordpress:
     #     container_name: wordpress
     #     build:
@@ -70,8 +70,6 @@ services:
         build:
             context: src/requirements/mariadb
             target: base
-#        ports:
-#            - "3306:3306"
         volumes:
             - db_data:/var/lib/mysql
         secrets:
