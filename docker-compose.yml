@@ -1,8 +1,10 @@
 volumes:
     web_data:
         driver: local
+        source: /home/lzipp/data
     db_data:
         driver: local
+        source: /home/lzipp/data
 
 networks:
     inception:
