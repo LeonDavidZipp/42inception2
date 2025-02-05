@@ -1,23 +1,28 @@
 CERTDIR := src/requirements/nginx/certs
 SECRETSDIR := src/secrets
 
-all: certs secrets
+all: certs
 	docker-compose up --build --remove-orphans
+
+stop:
+	docker-compose down
 
 db:
 	docker-compose up --build db
 
-nginx:
+nginx: certs
 	docker-compose up --build nginx
 
 wp:
 	docker-compose up --build wordpress
 
 certs:
-	mkdir -p $(CERTDIR)
-	openssl req -x509 -newkey rsa:4096 -keyout $(CERTDIR)/key.pem -out $(CERTDIR)/cert.pem \
-	-sha256 -days 3650 -nodes -subj "/C=DE/ST=BadenWuerttemberg/L=Heilbronn/O=42Heilbronn/OU=Student/CN=localhost"
-	openssl dhparam -out $(CERTDIR)/dhparam.pem 2048
+	if [ ! -d $(CERTDIR) ]; then \
+		mkdir -p $(CERTDIR); \
+		openssl req -x509 -newkey rsa:4096 -keyout $(CERTDIR)/key.pem -out $(CERTDIR)/cert.pem \
+			-sha256 -days 3650 -nodes -subj "/C=DE/ST=BadenWuerttemberg/L=Heilbronn/O=42Heilbronn/OU=Student/CN=localhost"; \
+		openssl dhparam -out $(CERTDIR)/dhparam.pem 2048; \
+	fi
 
 secrets:
 	docker secret create wp_db_user_pwd $(SECRETSDIR)/wp_db_user_pwd.txt
