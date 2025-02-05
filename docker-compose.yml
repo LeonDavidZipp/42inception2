@@ -1,9 +1,7 @@
 volumes:
-    wp_data:
+    web_data:
         driver: local
     db_data:
-        driver: local
-    wordpress_website_files:
         driver: local
 
 networks:
@@ -14,10 +12,10 @@ networks:
 secrets:
     db_root_pwd:
         file: src/secrets/db_root_pwd.txt
-    wp_db_user_pwd:
-        file: src/secrets/wp_db_user_pwd.txt
     wp_admin_pwd:
         file: src/secrets/wp_admin_pwd.txt
+    wp_db_user_pwd:
+        file: src/secrets/wp_db_user_pwd.txt
     wp_user_pwd:
         file: src/secrets/wp_user_pwd.txt
 
@@ -33,7 +31,7 @@ services:
             - wordpress
             - db
         volumes:
-            - ./web:/var/www/html
+            - web_data:/var/www/html
         networks:
             - inception
         restart: always
@@ -43,9 +41,10 @@ services:
         build:
             context: src/requirements/wordpress
         depends_on:
-            - db
+            db:
+                condition: service_healthy
         volumes:
-            - wp_data:/var/www/html/
+            - web_data:/var/www/html/
         networks:
             - inception
         secrets:
@@ -80,3 +79,9 @@ services:
         networks:
             - inception
         restart: unless-stopped
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 30s
