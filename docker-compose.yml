@@ -1,10 +1,16 @@
 volumes:
     web_data:
         driver: local
-        source: /home/lzipp/data
+        driver_opts:
+            type: none
+            device: /home/lzipp/data
+            o: bind
     db_data:
         driver: local
-        source: /home/lzipp/data
+        driver_opts:
+            type: none
+            device: /home/lzipp/data
+            o: bind
 
 networks:
     inception:
