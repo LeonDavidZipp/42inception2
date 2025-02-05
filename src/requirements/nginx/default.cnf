@@ -24,11 +24,12 @@ server {
 
 	# SSL configuration
 	#
-	listen 443 ssl default_server;
-	listen [::]:443 ssl default_server;
+	listen 443 ssl;
+	listen [::]:443 ssl;
 	#
 	# Note: You should disable gzip for SSL traffic.
 	# See: https://bugs.debian.org/773332
+	gzip off;
 	#
 	# Read up on ssl_ciphers to ensure a secure configuration.
 	# See: https://bugs.debian.org/765782
@@ -39,8 +40,8 @@ server {
 	ssl_certificate_key /etc/nginx/ssl/key.pem;
 	ssl_dhparam /etc/nginx/ssl/dhparam.pem;
 
-	ssl_protocols TLSv1.3 TLSv1.2;
-	ssl_prefer_server_ciphers on;
+	ssl_protocols TLSv1.2 TLSv1.3;
+	# ssl_prefer_server_ciphers on;
 
 	# include snippets/snakeoil.conf;
 
