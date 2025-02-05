@@ -12,10 +12,16 @@ COPY tools/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN apt-get update \
 	&& apt-get upgrade -y \
 	&& apt-get install -y \
-		curl \
 		php8.2-fpm \
-		php-fpm \
-		php-mysql \
+		php8.2-mysqli \
+		php8.2-curl \
+		php8.2-gd \
+		php8.2-intl \
+		php8.2-mbstring \
+		php8.2-imagick \
+		php8.2-dom \
+		php8.2-zip \
+		curl \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
 	&& apt-get clean \
