@@ -17,7 +17,6 @@ RUN apt-get update \
 	&& apt-get install -y \
 	mariadb-server \
 	gettext \
-	sed \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold"
 
