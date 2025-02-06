@@ -19,19 +19,19 @@ networks:
 
 secrets:
     db_root_pwd:
-        file: src/secrets/db_root_pwd.txt
+        file: srcs/secrets/db_root_pwd.txt
     wp_admin_pwd:
-        file: src/secrets/wp_admin_pwd.txt
+        file: srcs/secrets/wp_admin_pwd.txt
     wp_db_user_pwd:
-        file: src/secrets/wp_db_user_pwd.txt
+        file: srcs/secrets/wp_db_user_pwd.txt
     wp_user_pwd:
-        file: src/secrets/wp_user_pwd.txt
+        file: srcs/secrets/wp_user_pwd.txt
 
 services:
     nginx:
         container_name: nginx
         build:
-            context: src/requirements/nginx
+            context: srcs/requirements/nginx
         ports:
             - "443:443"
             - "80:80"
@@ -47,7 +47,7 @@ services:
     wordpress:
         container_name: wordpress
         build:
-            context: src/requirements/wordpress
+            context: srcs/requirements/wordpress
         depends_on:
             db:
                 condition: service_healthy
@@ -75,7 +75,7 @@ services:
     db:
         container_name: db
         build:
-            context: src/requirements/mariadb
+            context: srcs/requirements/mariadb
         volumes:
             - db_data:/var/lib/mysql
         secrets:

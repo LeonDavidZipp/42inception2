@@ -1,5 +1,5 @@
-CERTDIR := src/requirements/nginx/certs
-SECRETSDIR := src/secrets
+CERTDIR := srcs/requirements/nginx/certs
+SECRETSDIR := srcs/secrets
 COMPOSE := docker compose
 
 all: certs
