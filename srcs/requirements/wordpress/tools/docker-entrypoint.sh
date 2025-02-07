@@ -47,4 +47,4 @@ fi
 chown -R www-data:www-data /var/www/html/
 
 echo "Starting PHP-FPM..."
-php-fpm8.2 -F
+php-fpm7.4 -F

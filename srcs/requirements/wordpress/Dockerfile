@@ -1,26 +1,26 @@
-FROM debian:stable-slim
+FROM debian:bullseye
 LABEL maintainer="lzipp"
 
 # Set environment variable to suppress prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Copy files
-COPY tools/www.conf /etc/php/8.2/fpm/pool.d/www.conf
+COPY tools/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 COPY tools/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 # Update package lists and install PHP and PHP-FPM
 RUN apt-get update \
 	&& apt-get upgrade -y \
 	&& apt-get install -y \
-		php8.2-fpm \
-		php8.2-mysqli \
-		php8.2-curl \
-		php8.2-gd \
-		php8.2-intl \
-		php8.2-mbstring \
-		php8.2-imagick \
-		php8.2-dom \
-		php8.2-zip \
+		php7.4-fpm \
+		php7.4-mysqli \
+		php7.4-curl \
+		php7.4-gd \
+		php7.4-intl \
+		php7.4-mbstring \
+		php7.4-imagick \
+		php7.4-dom \
+		php7.4-zip \
 		curl \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
