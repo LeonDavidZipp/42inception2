@@ -2,14 +2,17 @@
 
 # Get secrets
 export WP_DB_USER_PWD=$(cat /run/secrets/wp_db_user_pwd)
+echo WP_USER $WP_DB_USER_PWD
 
 # Start MariaDB server in the background
 echo "Starting MariaDB for initialization..."
-mysqld_safe --skip-networking &
-mariadb_pid=$!
+# mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+mariadbd --user=mysql --datadir=/var/lib/mysql --skip-networking &
+mysqld_safe 
 
 # Wait for MariaDB server to be ready
 while ! mysqladmin ping --silent; do
+echo "waiting..."
 	sleep 1
 done
 
