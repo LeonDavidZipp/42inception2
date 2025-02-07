@@ -3,13 +3,15 @@ volumes:
         driver: local
         driver_opts:
             type: none
-            device: /home/lzipp/data
+#            device: /home/lzipp/data # For Linux
+            device: /Users/lzipp/Desktop/web_vol # For MacOS
             o: bind
     db_data:
         driver: local
         driver_opts:
             type: none
-            device: /home/lzipp/data
+#            device: /home/lzipp/data # For Linux
+            device: /Users/lzipp/Desktop/db_vol # For MacOS
             o: bind
 
 networks:

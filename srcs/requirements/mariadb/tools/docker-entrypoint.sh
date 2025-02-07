@@ -7,8 +7,8 @@ echo WP_USER $WP_DB_USER_PWD
 # Start MariaDB server in the background
 echo "Starting MariaDB for initialization..."
 # mariadb-install-db --user=mysql --datadir=/var/lib/mysql
-mariadbd --user=mysql --datadir=/var/lib/mysql --skip-networking &
-mysqld_safe 
+#mariadbd --user=mysql --datadir=/var/lib/mysql --skip-networking &
+mysqld_safe  --skip-networking &
 
 # Wait for MariaDB server to be ready
 while ! mysqladmin ping --silent; do

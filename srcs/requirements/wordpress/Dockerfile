@@ -32,6 +32,9 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 	chmod +x wp-cli.phar && \
 	mv wp-cli.phar /usr/local/bin/wp
 
+# Create necessary directories
+RUN mkdir -p /run/php
+
 # Create necessary directories and set permissions
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 CMD ["/usr/local/bin/docker-entrypoint.sh"]
