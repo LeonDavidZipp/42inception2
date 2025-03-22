@@ -2,6 +2,9 @@ CERTDIR := srcs/requirements/nginx/certs
 SECRETSDIR := srcs/secrets
 COMPOSE := docker compose
 
+all: swarm_init certs
+	$(COMPOSE) up --build --remove-orphans
+
 swarm_init:
 	@if ! docker secret ls > /dev/null 2>&1; then \
 		echo "Initializing Docker Swarm..."; \
@@ -9,9 +12,6 @@ swarm_init:
 	else \
 		echo "Docker Swarm is already initialized."; \
 	fi
-
-all: swarm_init certs
-	$(COMPOSE) up --build --remove-orphans
 
 stop:
 	$(COMPOSE) down

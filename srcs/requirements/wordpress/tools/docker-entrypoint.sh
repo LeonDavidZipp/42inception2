@@ -19,7 +19,7 @@ wp config create \
 	--force \
 	--allow-root
 
-echo
+echo "Checking if WordPress is installed..."
 if ! wp core is-installed --allow-root; then
 	echo "Installing WordPress core..."
 	wp core install \

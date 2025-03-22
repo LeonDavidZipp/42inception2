@@ -2,7 +2,7 @@ FROM debian:bullseye
 LABEL maintainer="lzipp"
 
 RUN apt-get update \
-	&& apt-get upgrade \
+	&& apt-get upgrade -y \
 	&& apt-get install -y \
 		nginx \
 		openssl
