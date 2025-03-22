@@ -14,6 +14,7 @@ COPY tools/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 # Update package lists and install MariaDB server
 RUN apt-get update \
+	&& apt-get upgrade -y \
 	&& apt-get install -y \
 	mariadb-server \
 	gettext \
