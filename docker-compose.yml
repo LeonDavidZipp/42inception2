@@ -3,15 +3,15 @@ volumes:
         driver: local
         driver_opts:
             type: none
-#            device: /home/lzipp/data # For Linux
-            device: /Users/lzipp/Desktop/web_vol # For MacOS
+            device: /home/lzipp/data/web # For Linux
+            # device: /Users/lzipp/Desktop/web_vol # For MacOS
             o: bind
     db_data:
         driver: local
         driver_opts:
             type: none
-#            device: /home/lzipp/data # For Linux
-            device: /Users/lzipp/Desktop/db_vol # For MacOS
+            device: /home/lzipp/data/db # For Linux
+            # device: /Users/lzipp/Desktop/db_vol # For MacOS
             o: bind
 
 networks:
@@ -63,7 +63,7 @@ services:
         environment:
             - WP_DB_NAME=${WP_DB_NAME}
             - WP_DB_USER=${WP_DB_USER}
-            - WP_DB_HOST=${WP_DB_HOST}
+            - WP_DB_HOST=db
             - WP_DB_PREFIX=${WP_DB_PREFIX}
             - WP_DOMAIN=${WP_DOMAIN}
             - WP_TITLE=${WP_TITLE}

@@ -22,6 +22,7 @@ RUN apt-get update \
 		php7.4-dom \
 		php7.4-zip \
 		curl \
+		netcat \
 		-o Dpkg::Options::="--force-confdef" \
 		-o Dpkg::Options::="--force-confold" \
 	&& apt-get clean \

@@ -5,6 +5,9 @@ COMPOSE := docker compose
 all: swarm_init certs
 	$(COMPOSE) up --build --remove-orphans
 
+build:
+	$(COMPOSE) build --no-cache
+
 swarm_init:
 	@if ! docker secret ls > /dev/null 2>&1; then \
 		echo "Initializing Docker Swarm..."; \
