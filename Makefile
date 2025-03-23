@@ -2,7 +2,9 @@ CERTDIR := srcs/requirements/nginx/certs
 SECRETSDIR := srcs/secrets
 COMPOSE := docker compose
 
-all: swarm_init certs
+all: start
+
+start: swarm_init certs
 	mkdir -p /home/lzipp/data/web
 	mkdir -p /home/lzipp/data/db
 	$(COMPOSE) up --remove-orphans --build
@@ -21,15 +23,6 @@ swarm_init:
 stop:
 	$(COMPOSE) down
 
-db:
-	$(COMPOSE) up --build db
-
-nginx: certs
-	$(COMPOSE) up --build nginx
-
-wp:
-	$(COMPOSE) up --build wordpress
-
 certs:
 	if [ ! -d $(CERTDIR) ]; then \
 		mkdir -p $(CERTDIR); \
@@ -45,8 +38,8 @@ secrets:
 	docker secret create wp_db_root_pwd $(SECRETSDIR)/wp_db_root_pwd.txt
 
 clean:
-# sudo docker exec -it db /bin/bash -c "rm -rf /var/lib/mysql/already_initialized"
 	$(COMPOSE) down
+	rm -rf /home/lzipp/data/web /home/lzipp/data/db
 	docker volume rm inception_web_data inception_db_data
 	docker secret rm wp_db_root_pwd wp_db_user_pwd wp_admin_pwd wp_user_pwd
 

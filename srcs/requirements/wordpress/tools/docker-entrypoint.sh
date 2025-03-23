@@ -12,7 +12,6 @@ echo "Checking if WordPress is installed..."
 cd /var/www/html
 wp core download --allow-root
 
-echo host: $WP_DB_HOST
 until nc -z -w50 $WP_DB_HOST 3306
 do
 	echo "Waiting for MariaDB to start..."
@@ -20,10 +19,6 @@ do
 done
 
 echo "Creating wp-config.php..."
-echo "WP db name: a"$WP_DB_NAME"a"
-echo "WP db user: a"$WP_DB_USER"a"
-echo "WP db user pwd: a"$WP_DB_USER_PWD"a"
-echo "WP db host: a"$WP_DB_HOST"a"
 wp config create \
 	--dbname=$WP_DB_NAME \
 	--dbuser=$WP_DB_USER \
