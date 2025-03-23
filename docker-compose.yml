@@ -21,13 +21,13 @@ networks:
 
 secrets:
     wp_db_root_pwd:
-        file: srcs/secrets/wp_db_root_pwd.txt
+        file: secrets/wp_db_root_pwd.txt
     wp_admin_pwd:
-        file: srcs/secrets/wp_admin_pwd.txt
+        file: secrets/wp_admin_pwd.txt
     wp_db_user_pwd:
-        file: srcs/secrets/wp_db_user_pwd.txt
+        file: secrets/wp_db_user_pwd.txt
     wp_user_pwd:
-        file: srcs/secrets/wp_user_pwd.txt
+        file: secrets/wp_user_pwd.txt
 
 services:
     nginx:

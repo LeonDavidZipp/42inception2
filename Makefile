@@ -1,5 +1,5 @@
 CERTDIR := srcs/requirements/nginx/certs
-SECRETSDIR := srcs/secrets
+SECRETSDIR := secrets
 COMPOSE := docker compose
 
 all: start
@@ -40,7 +40,7 @@ secrets:
 clean:
 	$(COMPOSE) down
 	rm -rf /home/lzipp/data/web /home/lzipp/data/db
-	docker volume rm inception_web_data inception_db_data
+	docker volume rm test_db_data test_web_data
 	docker secret rm wp_db_root_pwd wp_db_user_pwd wp_admin_pwd wp_user_pwd
 
 re: clean all db nginx wp certs secrets
