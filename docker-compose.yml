@@ -45,8 +45,8 @@ services:
             - inception
         secrets:
             - wp_db_root_pwd
-            - wp_admin_pwd
             - wp_db_user_pwd
+            - wp_admin_pwd
             - wp_user_pwd
         env_file: ".env"
         restart: always
@@ -64,8 +64,8 @@ services:
             - inception
         secrets:
             - wp_db_root_pwd
-            - wp_admin_pwd
             - wp_db_user_pwd
+            - wp_admin_pwd
             - wp_user_pwd
         env_file: ".env"
         restart: unless-stopped
@@ -78,8 +78,8 @@ services:
             - db_data:/var/lib/mysql
         secrets:
             - wp_db_root_pwd
-            - wp_admin_pwd
             - wp_db_user_pwd
+            - wp_admin_pwd
             - wp_user_pwd
         env_file: ".env"
         networks:

@@ -9,6 +9,7 @@ WP_ADMIN_PWD=$(cat /run/secrets/wp_admin_pwd)
 WP_USER_PWD=$(cat /run/secrets/wp_user_pwd)
 
 echo "Checking if WordPress is installed..."
+cd /var/www/html
 wp core download --allow-root
 
 echo host: $WP_DB_HOST
@@ -18,8 +19,6 @@ do
 	sleep 1
 done
 
-cd /var/www/html
-
 echo "Creating wp-config.php..."
 echo "WP db name: a"$WP_DB_NAME"a"
 echo "WP db user: a"$WP_DB_USER"a"
@@ -28,10 +27,10 @@ echo "WP db host: a"$WP_DB_HOST"a"
 wp config create \
 	--dbname=$WP_DB_NAME \
 	--dbuser=$WP_DB_USER \
-	--dbpass=$WP_DB_USER_PWD \
 	--dbhost=$WP_DB_HOST \
 	--allow-root \
-	--quiet
+	--quiet \
+	--prompt=dbpass < /run/secrets/wp_db_user_pwd
 
 wp core install \
 	--url=$WP_DOMAIN \

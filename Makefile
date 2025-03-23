@@ -42,7 +42,7 @@ secrets:
 	docker secret create wp_db_user_pwd $(SECRETSDIR)/wp_db_user_pwd.txt
 	docker secret create wp_admin_pwd $(SECRETSDIR)/wp_admin_pwd.txt
 	docker secret create wp_user_pwd $(SECRETSDIR)/wp_user_pwd.txt
-	docker secret create db_root_pwd $(SECRETSDIR)/wp_db_root_pwd.txt
+	docker secret create wp_db_root_pwd $(SECRETSDIR)/wp_db_root_pwd.txt
 
 clean:
 # sudo docker exec -it db /bin/bash -c "rm -rf /var/lib/mysql/already_initialized"
