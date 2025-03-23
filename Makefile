@@ -3,7 +3,9 @@ SECRETSDIR := srcs/secrets
 COMPOSE := docker compose
 
 all: swarm_init certs
-	$(COMPOSE) up --build --remove-orphans
+	mkdir -p /home/lzipp/data/web
+	mkdir -p /home/lzipp/data/db
+	$(COMPOSE) up --remove-orphans --build
 
 build:
 	$(COMPOSE) build --no-cache
@@ -40,11 +42,12 @@ secrets:
 	docker secret create wp_db_user_pwd $(SECRETSDIR)/wp_db_user_pwd.txt
 	docker secret create wp_admin_pwd $(SECRETSDIR)/wp_admin_pwd.txt
 	docker secret create wp_user_pwd $(SECRETSDIR)/wp_user_pwd.txt
-	docker secret create db_root_pwd $(SECRETSDIR)/db_root_pwd.txt
+	docker secret create db_root_pwd $(SECRETSDIR)/wp_db_root_pwd.txt
 
 clean:
+# sudo docker exec -it db /bin/bash -c "rm -rf /var/lib/mysql/already_initialized"
 	$(COMPOSE) down
-	rm -rf $(CERTDIR)
-	docker secret rm db_root_pwd wp_db_user_pwd wp_admin_pwd wp_user_pwd
+	docker volume rm inception_web_data inception_db_data
+	docker secret rm wp_db_root_pwd wp_db_user_pwd wp_admin_pwd wp_user_pwd
 
 re: clean all db nginx wp certs secrets

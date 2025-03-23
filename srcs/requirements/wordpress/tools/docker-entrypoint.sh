@@ -1,58 +1,37 @@
 #!/bin/bash
 
-# Create config if it doesn't exist
-cd /var/www/html
-wp core download --allow-root
+curl -o /usr/local/bin/wp \
+	-O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x /usr/local/bin/wp
 
 WP_DB_USER_PWD=$(cat /run/secrets/wp_db_user_pwd)
 WP_ADMIN_PWD=$(cat /run/secrets/wp_admin_pwd)
 WP_USER_PWD=$(cat /run/secrets/wp_user_pwd)
 
-echo "Creating wp-config.php..."
-echo $WP_DB_NAME
-echo $WP_DB_USER
-echo $WP_DB_USER_PWD
-echo $WP_DB_HOST
-echo $WP_DB_USER_PWD
-echo $WP_ADMIN_PWD
-echo $WP_USER_PWD
+echo "Checking if WordPress is installed..."
+wp core download --allow-root
 
+echo host: $WP_DB_HOST
 until nc -z -w50 $WP_DB_HOST 3306
 do
 	echo "Waiting for MariaDB to start..."
 	sleep 1
 done
 
-# wp config create \
-# 	--dbname="${WP_DB_NAME}" \
-# 	--dbuser="${WP_DB_USER}" \
-# 	--dbhost="${WP_DB_HOST}" \
-# 	--dbprefix="${WP_DB_PREFIX}" \
-# 	--force \
-# 	--allow-root \
-# 	--prompt=dbpass < /run/secrets/wp_db_user_pwd
+cd /var/www/html
 
+echo "Creating wp-config.php..."
+echo "WP db name: a"$WP_DB_NAME"a"
+echo "WP db user: a"$WP_DB_USER"a"
+echo "WP db user pwd: a"$WP_DB_USER_PWD"a"
+echo "WP db host: a"$WP_DB_HOST"a"
 wp config create \
 	--dbname=$WP_DB_NAME \
 	--dbuser=$WP_DB_USER \
+	--dbpass=$WP_DB_USER_PWD \
 	--dbhost=$WP_DB_HOST \
 	--allow-root \
-	--quiet \
-	--prompt=dbpass < /run/secrets/wp_db_user_pwd
-
-# echo "Checking if WordPress is installed..."
-# if ! wp core is-installed --allow-root; then
-# 	echo "Installing WordPress core..."
-# 	wp core install \
-# 		--url="${WP_DOMAIN}" \
-# 		--title="${WP_TITLE}" \
-# 		--admin_user="${WP_ADMIN}" \
-# 		--admin_email="${WP_ADMIN_EMAIL}" \
-# 		--admin_password="${WP_ADMIN_PWD}" \
-# 		--allow-root
-# else
-# 	echo "WordPress is already installed. Skipping core installation."
-# fi
+	--quiet
 
 wp core install \
 	--url=$WP_DOMAIN \
@@ -62,17 +41,6 @@ wp core install \
 	--allow-root \
 	--quiet \
 	--prompt=admin_password < /run/secrets/wp_admin_pwd
-
-# if ! wp user get "${WP_USER}" --field=ID --allow-root > /dev/null 2>&1; then
-# 	echo "Creating user ${WP_USER}..."
-# 	wp user create \
-# 		"${WP_USER}" \
-# 		"${WP_USER_EMAIL}" \
-# 		--user_pass="${WP_USER_PWD}" \
-# 		--allow-root
-# else
-# 	echo "User ${WP_USER} already exists. Skipping user creation."
-# fi
 
 wp user create \
 	$WP_USER \
