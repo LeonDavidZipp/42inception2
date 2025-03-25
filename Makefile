@@ -4,13 +4,18 @@ COMPOSE := docker compose
 
 all: start
 
-start: swarm_init certs
+start: get_env swarm_init certs
 	mkdir -p /home/lzipp/data/web
 	mkdir -p /home/lzipp/data/db
 	$(COMPOSE) up --remove-orphans --build
 
-build:
-	$(COMPOSE) build --no-cache
+get_env:
+	@if [ ! -f .env ]; then \
+		cp ../.env .env; \
+	fi
+	@if [ ! -d secrets ]; then \
+		cp -r ../secrets secrets; \
+	fi
 
 swarm_init:
 	@if ! docker secret ls > /dev/null 2>&1; then \
