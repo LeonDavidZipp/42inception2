@@ -4,14 +4,14 @@ COMPOSE := docker compose
 
 all: start
 
-start: get_env swarm_init certs
+start: swarm_init certs
 	mkdir -p /home/lzipp/data/web
 	mkdir -p /home/lzipp/data/db
-	$(COMPOSE) up --remove-orphans --build
+	cd ./srcs && $(COMPOSE) up --remove-orphans --build
 
 get_env:
 	@if [ ! -f .env ]; then \
-		cp ../.env .env; \
+		cp ../.env srcs/.env; \
 	fi
 	@if [ ! -d secrets ]; then \
 		cp -r ../secrets secrets; \
@@ -26,7 +26,7 @@ swarm_init:
 	fi
 
 stop:
-	$(COMPOSE) down
+	cd ./srcs && $(COMPOSE) down
 
 certs:
 	if [ ! -d $(CERTDIR) ]; then \
@@ -43,7 +43,7 @@ secrets:
 	docker secret create wp_db_root_pwd $(SECRETSDIR)/wp_db_root_pwd.txt
 
 clean:
-	$(COMPOSE) down
+	cd ./srcs && $(COMPOSE) down
 	rm -rf /home/lzipp/data/web /home/lzipp/data/db
 	docker volume rm test_db_data test_web_data
 	docker secret rm wp_db_root_pwd wp_db_user_pwd wp_admin_pwd wp_user_pwd
